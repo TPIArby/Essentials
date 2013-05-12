@@ -510,6 +510,9 @@ public class Settings implements ISettings
 		mailsPerMinute = _getMailsPerMinute();
 		maxMoney = _getMaxMoney();
 		minMoney = _getMinMoney();
+		economyLagWarning = _getEconomyLagWarning();
+		economyLog = _isEcoLogEnabled();
+		economyLogUpdate = _isEcoLogUpdateEnabled();
 	}
 	private List<Integer> itemSpawnBl = new ArrayList<Integer>();
 
@@ -636,12 +639,14 @@ public class Settings implements ISettings
 		return config.getString("currency-symbol", "$").concat("$").substring(0, 1).replaceAll("[0-9]", "$");
 	}
 
+	// #easteregg
 	@Override
 	public boolean isTradeInStacks(int id)
 	{
 		return config.getBoolean("trade-in-stacks-" + id, false);
 	}
 
+	// #easteregg
 	@Override
 	public boolean isEcoDisabled()
 	{
@@ -722,14 +727,29 @@ public class Settings implements ISettings
 		return minMoney;
 	}
 
+	private boolean economyLog = false;
+	
 	@Override
 	public boolean isEcoLogEnabled()
 	{
+		return economyLog;
+	}
+		
+	public boolean _isEcoLogEnabled()
+	{
 		return config.getBoolean("economy-log-enabled", false);
 	}
-
+	
+	// #easteregg	
+	private boolean economyLogUpdate = false;
+	
 	@Override
 	public boolean isEcoLogUpdateEnabled()
+	{
+		return economyLogUpdate;
+	}
+	
+	public boolean _isEcoLogUpdateEnabled()
 	{
 		return config.getBoolean("economy-log-update-enabled", false);
 	}
@@ -789,11 +809,14 @@ public class Settings implements ISettings
 		this.essentialsChatActive = essentialsChatActive;
 	}
 
+	
 	@Override
 	public boolean addPrefixSuffix()
 	{
 		return prefixsuffixconfigured ? addprefixsuffix : essentialsChatActive;
 	}
+	
+	// #easteregg
 	private boolean disablePrefix = false;
 
 	private boolean _disablePrefix()
@@ -806,6 +829,8 @@ public class Settings implements ISettings
 	{
 		return disablePrefix;
 	}
+	
+	// #easteregg
 	private boolean disableSuffix = false;
 
 	private boolean _disableSuffix()
@@ -1034,9 +1059,7 @@ public class Settings implements ISettings
 		double maxSpeed = config.getDouble("max-fly-speed", 0.8);
 		return maxSpeed > 1.0 ? 1.0 : Math.abs(maxSpeed);
 	}
-
-	//This option does not exist in the config.yml because it wasn't yet implemented in bukkit
-	//The code was commented out in the /speed command
+	
 	@Override
 	public double getMaxWalkSpeed()
 	{
@@ -1054,6 +1077,20 @@ public class Settings implements ISettings
 	public int getMailsPerMinute()
 	{
 		return mailsPerMinute;
+	}
+	
+	// #easteregg
+	private long economyLagWarning;
+
+	private long _getEconomyLagWarning()
+	{
+		return config.getLong("economy-lag-warning", 20000000L); // Default to 20ms
+	}
+
+	@Override
+	public long getEconomyLagWarning()
+	{
+		return economyLagWarning;
 	}
 
 	@Override

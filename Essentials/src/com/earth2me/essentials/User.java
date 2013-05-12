@@ -397,7 +397,7 @@ public class User extends UserData implements Comparable<User>, IReplyTo, IUser
 		final long start = System.nanoTime();
 		final BigDecimal value = _getMoney();
 		final long elapsed = start - System.nanoTime();
-		if (elapsed > 20000000L)
+		if (elapsed > ess.getSettings().getEconomyLagWarning())
 		{
 			ess.getLogger().log(Level.INFO, "Lag Notice - Slow Economy Response - Request took over {0}ms!", elapsed / 1000000);
 		}
